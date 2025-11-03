@@ -22,6 +22,7 @@ The project is structured into the following files:
 *   `auth.py`: Contains the core authentication logic, including functions for secure password hashing, salting, and verification, as well as creating new user entries.
 *   `main.py`: The main entry point for the application, providing the command-line interface for user registration and login.
 *   `users.json`: The JSON file serving as the persistent storage for user accounts.
+*   `test_auth.py`: Contains unit tests for the authentication module.
 
 ## Building and Running
 
@@ -34,6 +35,21 @@ To run the authentication module:
     python main.py
     ```
 4.  Follow the on-screen prompts to either create a new user or log in.
+
+## Testing
+
+The project includes a suite of unit tests in `test_auth.py` to ensure the correctness and security of the authentication module. The tests cover the following aspects:
+
+*   **Unique Username:** Ensures that the system prevents the creation of users with duplicate usernames.
+*   **Password Hashing and Salting:** Verifies that the password hashing and salting mechanism is working correctly.
+*   **Password Verification:** Checks the password verification logic.
+*   **Vague Error Messages:** Confirms that the login process provides a generic error message for both incorrect usernames and incorrect passwords, which helps prevent username enumeration attacks.
+
+To run the tests, execute the following command in your terminal:
+
+```bash
+python -m unittest test_auth.py
+```
 
 ## Development Conventions
 
