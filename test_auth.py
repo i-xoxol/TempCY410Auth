@@ -60,5 +60,36 @@ class TestAuth(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(message, "Error: Invalid username or password.")
 
+    def test_user_to_dict(self):
+        """Test the to_dict method of the User class."""
+        user_dict = self.test_user.to_dict()
+        self.assertEqual(user_dict["username"], "testuser")
+        self.assertEqual(user_dict["name"], "Test User")
+        self.assertEqual(user_dict["salt"], self.test_user.salt)
+        self.assertEqual(user_dict["hashed_password"], self.test_user.hashed_password)
+
+    def test_user_from_dict(self):
+        """Test the from_dict method of the User class."""
+        user_dict = self.test_user.to_dict()
+        new_user = User.from_dict(user_dict)
+        self.assertEqual(new_user.username, "testuser")
+        self.assertEqual(new_user.name, "Test User")
+        self.assertEqual(new_user.salt, self.test_user.salt)
+        self.assertEqual(new_user.hashed_password, self.test_user.hashed_password)
+
+    def test_save_and_load_users(self):
+        """Test saving and loading users to/from a file."""
+        # The setUp method already saves a user. We load it and check if it's correct.
+        loaded_users = User.load_users(self.test_users_file)
+        self.assertEqual(len(loaded_users), 1)
+        self.assertEqual(loaded_users[0].username, "testuser")
+
+        # Add another user and save
+        create_new_user("testuser2", "Test User 2", "password456", self.users)
+        User.save_users(self.users, self.test_users_file)
+        loaded_users = User.load_users(self.test_users_file)
+        self.assertEqual(len(loaded_users), 2)
+        self.assertEqual(loaded_users[1].username, "testuser2")
+
 if __name__ == '__main__':
     unittest.main()
