@@ -24,6 +24,8 @@ def verify_password(stored_salt, stored_password_hash, provided_password):
     return hashed_provided_password == stored_password_hash
 
 def create_new_user(username, name, password, users):
+    if any(u.username == username for u in users):
+        raise ValueError("Username already exists")
     salt, hashed_password = hash_password(password)
     new_user = User(username, name, salt, hashed_password)
     users.append(new_user)
